@@ -1,37 +1,19 @@
 from typing import Optional
+
 import fastapi
+from fastapi.staticfiles import StaticFiles
 import uvicorn
+from starlette.requests import Request
+from starlette.templating import Jinja2Templates
 
 api = fastapi.FastAPI()
+templates = Jinja2Templates('templates')
+api.mount('/static', StaticFiles(directory='static'), name='static')
 
 @api.get('/')
-def index():
-    body = "<html>" \
-                "<body>" \
-                "<h1>Welcome to the API</h1>" \
-                "</body>" \
-            "</html>" \
+def index(request: Request):
+   
+    return templates.TemplateResponse('home/index.html', {'request': request})
 
-    return fastapi.responses.HTMLResponse(body)
-
-@api.get('/api/calculate')
-def calculate(x: int, y: int, z: Optional[int] = None):
-    if z == 0:
-        return fastapi.responses.JSONResponse(
-            status_code=400,
-            content='{"Error": "Z cannot be zero"}'
-            )
-    value = (x + y)
-
-    if z is not None:
-        value /= z
-
-    return {
-        'x': x,
-        'y': y,
-        'z': z,
-        'value': value
-    }
-
-
-uvicorn.run(api)
+if __name__ == '__main__':
+    uvicorn.run(api, port=8000, host='127.0.0.1')
