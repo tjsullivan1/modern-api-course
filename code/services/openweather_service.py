@@ -7,6 +7,7 @@ api_key: Optional[str] = None
 
 async def get_report_async(city: str, state: Optional[str], country: str, units: str) -> dict:
     city, state, country, units = validate_inputs(city, state, country, units)
+    
     if forecast := weather_cache.get_weather(city, state, country, units):
         return forecast
 
