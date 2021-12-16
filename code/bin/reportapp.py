@@ -4,7 +4,10 @@ def main():
     choice = input("[R]eport weather or [s]ee reports?")
     while choice:
         if choice.lower().strip() == 'r':
-            report_event()
+            desc = input("What is happening now?")
+            city = input("What city are you in?")
+            state = input("What is your state?")
+            report_event(desc, city, state)
         elif choice.lower().strip() == 's':
             see_events()
         else:
@@ -13,12 +16,9 @@ def main():
         choice = input("[R]eport weather or [s]ee reports?")
 
 
-def report_event():
-    desc = input("What is happening now?")
-    city = input("What city are you in?")
-    state = input("What is your state?")
+def report_event(description: str, city: str, state: str):
     data = {
-        "description": desc,
+        "description": description,
         "location": {
             "city": city,
             "state": state
