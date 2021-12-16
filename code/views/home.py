@@ -14,7 +14,7 @@ async def index(request: Request):
     data = {'request': request, 'events': events}
     return templates.TemplateResponse('home/index.html', data)
 
-@router.get('/favicon.ico')
+@router.get('/favicon.ico', include_in_schema=False)
 def favicon():
     # TODO: Find out best way to add HTTP Status code
     return fastapi.responses.RedirectResponse(url='/static/img/favicon.ico')
